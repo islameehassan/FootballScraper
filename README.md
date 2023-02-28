@@ -20,3 +20,4 @@ options:
 ```
 ## CLI in action
 ![alt text](images/Schedule_England_Feb28.png)
+![alt text](images/forwardbackward_Feature.png)
