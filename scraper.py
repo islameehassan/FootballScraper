@@ -11,7 +11,7 @@ from colorama import Fore, Back, Style
 from colorama import init
 
 fbref_url = 'https://fbref.com/en/matches/'
-class Scraper:
+class scraper:
     # init the scraper object
     def __init__(self, args):
         self.date = args.date
@@ -124,10 +124,10 @@ class Scraper:
     # get matches by league    
     def get_matches_info_by_league(self):
         self.parseLeagues()
+        leagues_found = {league: False for league in self.leagues} # check if the league is found or not to print a message
         # get the data of each league
         for row in self.tables:
             league_title = row.find('a')
-            leagues_found = {league: False for league in self.leagues}
             if league_title.text in self.leagues or self.searchmethod == "all":
                 leagues_found[league_title.text] = True
                 print(Fore.CYAN + league_title.text)
@@ -136,9 +136,11 @@ class Scraper:
                 matches.pop(0) # keys row
                 self.get_matches_info(matches)
                 print()
-        for league in self.leagues:
-            if not leagues_found[league]:
-                print(Fore.RED + f"No matches found on {self.date} for " + league)
+        # print a message if the league is not found
+        if self.searchmethod == "league":
+            for league in self.leagues:
+                if not leagues_found[league]:
+                    print(Fore.RED + f"No matches found on {self.date} for " + league)
     # main function
     def run(self):
         init(autoreset=True)

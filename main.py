@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import requests
-from Scraper import Scraper
+from scraper import scraper
 
 # parse request
 leagues = ["Serie", "Liga", "Ligue", "Bundesliga", "Premier"]
@@ -17,5 +17,5 @@ def parseRequest():
 
 args = parseRequest()
 # feed the date to the scraper object to fetch all the info needed
-OneFootball = Scraper(args)
+OneFootball = scraper(args)
 OneFootball.run()
