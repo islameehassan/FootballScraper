@@ -18,6 +18,6 @@ options:
   --fbd FBD             number of days to go frowards or backwards from the date provided, such that negative numbers will go backwards
   -a, --all             display all the results of all leagues and cups (this will overwrite the league and country)
 ```
-## CLI in action
+## Futbl in action
 ![alt text](images/Schedule_England_Feb28.png)
 ![alt text](images/forwardbackward_Feature.png)
