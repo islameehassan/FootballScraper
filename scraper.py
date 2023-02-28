@@ -6,6 +6,8 @@
 # Italy, Spain, France, Germany, England
 
 import requests
+from datetime import date
+from datetime import timedelta
 from bs4 import BeautifulSoup
 from colorama import Fore, Back, Style
 from colorama import init
@@ -15,12 +17,34 @@ class scraper:
     # init the scraper object
     def __init__(self, args):
         self.date = args.date
-        self.request = requests.get(fbref_url + self.date)
-        self.soup = BeautifulSoup(self.request.content, 'lxml')
+        self.days = args.fbd
         self.leagues = args.league
         self.countries = args.country
         self.searchmethod = "all" if args.all else "league" if len(self.countries) == 0 else "country"
-        self.CountriesLeagues = {}
+        self.CountriesLeagues = {}    
+    
+    # parse the date for validation purposes and special functionalities, like allowing to type "yesterday" instead of the date formated "YY-MM-DD"
+    def parseDate(self):
+        datetime_object = date.today() # get today's date, default value
+
+        if self.date == "yesterday":
+            datetime_object = datetime_object + timedelta(days=-1)
+        elif self.date == "tomorrow":
+            datetime_object = datetime_object + timedelta(days=1)
+        elif self.date != "today" and self.date != None:
+            try:
+                datetime_object = date.fromisoformat(self.date) # check validity of the date
+            except:
+                print("Invalid Date")
+                exit()  
+        datetime_object = datetime_object + timedelta(days=self.days)
+        self.date = datetime_object.strftime('%Y-%m-%d') 
+        
+    # send the request to the website to fetch the html and "beautify" using BeautifulSoup
+    def sendRequest(self):
+        self.parseDate()
+        self.request = requests.get(fbref_url + self.date)
+        self.soup = BeautifulSoup(self.request.content, 'lxml')
         self.tables = self.soup.find_all("div", class_= lambda text: False if text is None else "table_wrapper" in text.lower()) # get all the tables to be parsed later
     
     # parse leagues names
@@ -141,9 +165,13 @@ class scraper:
             for league in self.leagues:
                 if not leagues_found[league]:
                     print(Fore.RED + f"No matches found on {self.date} for " + league)
+                    print(end="-"*15)
+                    print()
     # main function
     def run(self):
         init(autoreset=True)
+        self.sendRequest()
+        print(Fore.YELLOW + f"Matches on {self.date}:", end="\n"*2)
         if self.searchmethod == "league" or self.searchmethod == "all":
             self.get_matches_info_by_league()
         else:
