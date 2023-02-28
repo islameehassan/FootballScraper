@@ -1,4 +1,4 @@
-# Futbl
+# Futbl-Data-Scraper
 ## A Command-Line Interface to scrap football data from [fbref](https://fbref.com/en/matches/) and present it by **league**, **country**, or **all**.
 ## Usage
 ``` 
