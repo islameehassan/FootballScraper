@@ -1,16 +1,18 @@
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from datetime import date
+from datetime import timedelta
+from datetime import datetime
+from colorama import Fore, Back, Style
+from colorama import init
+
 # Scraper Class
 # scraps fbref.com to get matches info either by league or by country
 # Leagues Supported:
 # Serie A, La Liga, Premier League, Ligue 1, Bundesliga
 # Countries Supported:
 # Italy, Spain, France, Germany, England
-
-import requests
-from datetime import date
-from datetime import timedelta
-from bs4 import BeautifulSoup
-from colorama import Fore, Back, Style
-from colorama import init
 
 fbref_url = 'https://fbref.com/en/matches/'
 class scraper:
@@ -40,11 +42,15 @@ class scraper:
         datetime_object = datetime_object + timedelta(days=self.days)
         self.date = datetime_object.strftime('%Y-%m-%d') 
         
-    # send the request to the website to fetch the html and "beautify" using BeautifulSoup
+    # use selenium to get the html source code and pass it to BeautifulSoup
     def sendRequest(self):
         self.parseDate()
-        self.request = requests.get(fbref_url + self.date)
-        self.soup = BeautifulSoup(self.request.content, 'lxml')
+        fire_foptions = Options()
+        fire_foptions.add_argument("--headless")
+        self.driver = webdriver.Firefox(options=fire_foptions)
+        self.driver.get(fbref_url + self.date)
+        htmlsource = self.driver.page_source
+        self.soup = BeautifulSoup(htmlsource, 'lxml')
         self.tables = self.soup.find_all("div", class_= lambda text: False if text is None else "table_wrapper" in text.lower()) # get all the tables to be parsed later
     
     # parse leagues names
@@ -86,7 +92,6 @@ class scraper:
                     if tag.text == country:
                         self.CountriesLeagues[country].append(row)
 
-
     # get the details of the matches
     def get_matches_info(self, matches):
         for i, match in enumerate(matches, 0):
@@ -98,14 +103,15 @@ class scraper:
                     AwayTeam = match_details.find('a').text
                 elif match_details['data-stat'] == "score":
                     try:
-                        Score = match_details.find_all("a")[0].text
+                        Score = match_details.find("a").text
                     except:
                         Score = ""
                 elif match_details['data-stat'] == "start_time":
                     try:
-                        Time = match_details.find_all("span", class_="venuetime")[0].text
+                        Time = match_details.find("span", {"class": "localtime"}).text
+                        # print(match_details.find_all("span", class_="venuetime"))[1].text
                     except:
-                        Time = ""
+                        Time = "Local Time Not Available"
                 elif match_details['data-stat'] == "notes":
                     try:
                         Notes = match_details.text

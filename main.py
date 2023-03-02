@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
 import argparse
-import requests
 from scraper import scraper
 
-# parse request
+
 leagues = ["Serie", "Liga", "Ligue", "Bundesliga", "Premier"]
 countries = ["Italy", "Spain", "France", "Germany", "England"]
+
+# parse the arguments
 def parseRequest():
     parse = argparse.ArgumentParser(description="A command line tool to get the results of previous matches and schedules of upcoming matches of all the leagues and cups as foound on fbref.com")
     parse.add_argument("date", type=str, nargs = "?", help="Date formated as \"YY-MM-DD\" or \"today\" or \"yesterday\" or \"tomorrow\", in case of no date provided, today's date will be used")
@@ -17,6 +17,6 @@ def parseRequest():
     return args
 
 args = parseRequest()
-# feed the date to the scraper object to fetch all the info needed
+#feed the args to the scraper object to fetch all the info needed
 fbref = scraper(args)
 fbref.run()
