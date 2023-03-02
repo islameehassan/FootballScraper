@@ -15,7 +15,7 @@ options:
                         a league to display its results, if no league is provided, all the leagues will be displayed
   -c [{Italy,Spain,France,Germany,England} ...], --country [{Italy,Spain,France,Germany,England} ...]
                         a country to display the results of all its leagues and cups (this will overwrite the league)
-  --fbd FBD             number of days to go frowards or backwards from the date provided, such that negative numbers will go backwards
+  --fbd FBD             number of days to go forwards or backwards from the date provided, such that negative numbers will go backwards
   -a, --all             display all the results of all leagues and cups (this will overwrite the league and country)
 ```
 ## Features
@@ -25,5 +25,9 @@ options:
 ``` --fbd N```, if N is negative then new date is in the past, meaning going backwards.
 - The timings of the matches are displayed in your local time, thanks to __Selenium__.
 
+## TODO
+- Show the status of a given player
+- Compare two players 
 ## CLI in action
 ![alt text](images/Schedule_England_Feb28.png)
+![alt text](images/forwardbackward_Feature.png)
