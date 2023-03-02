@@ -159,7 +159,7 @@ class scraper:
         for row in self.tables:
             league_title = row.find('a')
             if league_title.text in self.leagues or self.searchmethod == "all":
-                if league_title.text == "Serie A":      # corner case: italian and and ecuadorian leagues have the same name
+                if league_title.text == "Serie A" and self.searchmethod == "league":      # corner case: italian and and ecuadorian leagues have the same name
                     country_name = row.find("h2").find("span", {"class" : "f-i"}) 
                     if country_name.text == "ec":
                         continue
