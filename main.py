@@ -17,6 +17,6 @@ def parseRequest():
     return args
 
 args = parseRequest()
-#feed the args to the scraper object to fetch all the info needed
+# # feed the date to the scraper object to fetch all the info needed
 fbref = scraper(args)
 fbref.run()
