@@ -25,6 +25,9 @@ options:
 ``` --fbd N```, if N is negative then new date is in the past, meaning going backwards.
 - The timings of the matches are displayed in your local time, thanks to __Selenium__.
 
+## TODO
+- Show the status of a given player
+- Compare two players 
 ## CLI in action
 ![alt text](images/Schedule_England_Feb28.png)
 ![alt text](images/forwardbackward_Feature.png)
