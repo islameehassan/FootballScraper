@@ -6,6 +6,7 @@ from datetime import timedelta
 from datetime import datetime
 from colorama import Fore, Back, Style
 from colorama import init
+import os
 
 # Scraper Class
 # scraps fbref.com to get matches info either by league or by country
@@ -47,7 +48,7 @@ class scraper:
         self.parseDate()
         fire_foptions = Options()
         fire_foptions.add_argument("--headless")
-        self.driver = webdriver.Firefox(options=fire_foptions)
+        self.driver = webdriver.Firefox(options=fire_foptions, service_log_path=os.devnull)
         self.driver.get(fbref_url + self.date)
         htmlsource = self.driver.page_source
         self.soup = BeautifulSoup(htmlsource, 'lxml')
